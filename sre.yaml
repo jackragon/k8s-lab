@@ -1,26 +1,26 @@
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: sre-ingress
-# spec:
-#   rules:
-#   - host: sre.com
-#     http:
-#       paths:
-#       - path: /square
-#         pathType: Prefix
-#         backend:
-#           service:
-#             name: sq-sv
-#             port:
-#               number: 8000
-#       - path: /fibonacci
-#         pathType: Prefix
-#         backend:
-#           service:
-#             name: fb-sv
-#             port:
-#               number: 8000
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sre-ingress
+spec:
+  rules:
+  - host: sre.com
+    http:
+      paths:
+      - path: /square
+        pathType: Prefix
+        backend:
+          service:
+            name: sq-sv
+            port:
+              number: 80
+      - path: /fibonacci
+        pathType: Prefix
+        backend:
+          service:
+            name: fb-sv
+            port:
+              number: 80
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
       - name: sq
-        image: jackmana/sre:sq
+        image: jackmana/sre:all
         resources:
           limits:
             memory: "100Mi"
@@ -60,7 +60,7 @@ spec:
     app: sq
   ports:
     - protocol: TCP
-      port: 8000
+      port: 80
       targetPort: 8000
 ---
 apiVersion: apps/v1
@@ -81,7 +81,7 @@ spec:
     spec:
       containers:
       - name: fb
-        image: jackmana/sre:fb
+        image: jackmana/sre:all
         resources:
           limits:
             memory: "200Mi"
@@ -101,5 +101,5 @@ spec:
     app: fb
   ports:
     - protocol: TCP
-      port: 8000
+      port: 80
       targetPort: 8000
