@@ -1,27 +1,27 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: sre-ingress
-spec:
-  rules:
-  - host: sre.com
-    http:
-      paths:
-      - path: /square
-        pathType: Prefix
-        backend:
-          service:
-            name: sq-sv
-            port:
-              number: 80
-      - path: /fibonacci
-        pathType: Prefix
-        backend:
-          service:
-            name: fb-sv
-            port:
-              number: 80
----
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: sre-ingress
+# spec:
+#   rules:
+#   - host: sre.com
+#     http:
+#       paths:
+#       - path: /square
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: sq-sv
+#             port:
+#               number: 80
+#       - path: /fibonacci
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: fb-sv
+#             port:
+#               number: 80
+# ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
