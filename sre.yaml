@@ -1,0 +1,105 @@
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: sre-ingress
+# spec:
+#   rules:
+#   - host: sre.com
+#     http:
+#       paths:
+#       - path: /square
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: sq-sv
+#             port:
+#               number: 8000
+#       - path: /fibonacci
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: fb-sv
+#             port:
+#               number: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sq
+  labels:
+    app: sq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sq
+  template:
+    metadata:
+      labels:
+        app: sq
+    spec:
+      containers:
+      - name: sq
+        image: jackmana/sre:sq
+        resources:
+          limits:
+            memory: "100Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 8000
+        env:
+        - name: SERIES_VERSION
+          value: square
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sq-sv
+spec:
+  selector:
+    app: sq
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fb
+  labels:
+    app: fb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fb
+  template:
+    metadata:
+      labels:
+        app: fb
+    spec:
+      containers:
+      - name: fb
+        image: jackmana/sre:fb
+        resources:
+          limits:
+            memory: "200Mi"
+            cpu: "200m"
+        ports:
+        - containerPort: 8000
+        env:
+        - name: SERIES_VERSION
+          value: fibonacci
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fb-sv
+spec:
+  selector:
+    app: fb
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
