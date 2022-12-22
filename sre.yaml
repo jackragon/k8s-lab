@@ -1,30 +1,14 @@
-
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: v1
+kind: Pod
 metadata:
-  name: sre-ingress
+  name: nginx
 spec:
-  rules:
-  - host: square
-    http:
-      paths:
-      - path: "/"
-        pathType: Prefix
-        backend:
-          service:
-            name: sq-svc
-            port:
-              number: 80
-  - host: fibonacci
-    http:
-      paths:
-      - path: "/"
-        pathType: Prefix
-        backend:
-          service:
-            name: fb-svc
-            port:
-              number: 80
+  containers:
+    - name: nginx
+      image: nginx:latest
+      ports:
+        - containerPort: 80
+          protocol: TCP
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -58,7 +42,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: sq-svc
+  name: square
 spec:
   selector:
     app: sq
@@ -66,6 +50,7 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8000
+
 
 ---
 apiVersion: apps/v1
@@ -100,7 +85,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: fb-svc
+  name: fibonacci
 spec:
   selector:
     app: fb
@@ -108,4 +93,3 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8000
-      name: http
