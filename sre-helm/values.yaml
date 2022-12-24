@@ -1,0 +1,6 @@
+sqName: square
+sqMEM: 100Mi
+sqCPU: 100m
+fbName: fibonacci
+fbNMEM: 200Mi
+fbNPU: 200m
