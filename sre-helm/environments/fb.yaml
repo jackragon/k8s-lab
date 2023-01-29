@@ -1,0 +1,5 @@
+name: fibonacci
+resource:
+  limits:
+    memory: "200Mi"
+    cpu: "200m"

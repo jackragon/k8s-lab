@@ -1,18 +1,2 @@
 replicas: 1
 image: jackmana/sre:all
-square:
-  name: square  
-  resource:
-    limits:
-      memory: "100Mi"
-      cpu: "100m"
-  env:
-    SERIES_VERSION: "square"
-fibonacci:
-  name: fibonacci
-  resource:
-    limits:
-      memory: "200Mi"
-      cpu: "200m"
-  env:
-    SERIES_VERSION: "fibonacci"
