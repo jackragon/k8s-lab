@@ -1,0 +1,61 @@
+---
+# Source: sre-helm/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: fibonacci
+spec:
+  selector:
+    app: fibonacci
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+---
+# Source: sre-helm/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fibonacci
+  labels:
+    app: fibonacci
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fibonacci
+  template:
+    metadata:
+      labels:
+        app: fibonacci
+    spec:
+      containers:     
+      - name: fibonacci
+        image: jackmana/sre:all
+        resources:
+          limits:
+            memory: 200Mi
+            cpu: 200m
+        ports:
+        - containerPort: 8000
+        env:
+          - name: SERIES_VERSION
+            value: fibonacci
+---
+# Source: sre-helm/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fibonacci-ingress
+spec:
+  rules:
+  - host: fibonacci
+    http:
+      paths:
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: fibonacci
+            port:
+              number: 80
