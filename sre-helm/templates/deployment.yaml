@@ -24,6 +24,10 @@ spec:
         ports:
         - containerPort: 8000
         env:
-        - name: SERIES_VERSION
-          value: {{ .Values.name }}
+          {{- range $k, $v := .Values.env }}
+          - name: {{ $v.name }}
+            value: {{ $v.value }}
+          {{- end }}
+
+
 
